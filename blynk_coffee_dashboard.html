@@ -1,0 +1,404 @@
+
+<!-- saved from url=(0057)file:///C:/Users/PC/Downloads/blynk_coffee_dashboard.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>
+  @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --c1:#2C1A0E;--c2:#4A2C17;--c3:#6B3F2A;--c4:#8B5A3C;
+    --c5:#A67C5B;--c6:#C4A07A;--c7:#DFC4A0;--c8:#F2E6D4;--c9:#FAF5EE;
+    --pixel:'Pixelify Sans',monospace
+  }
+  body{background:transparent}
+  .dash{
+    font-family:var(--pixel);
+    background:linear-gradient(160deg,#3D2010 0%,#5C3620 40%,#7A4A2A 100%);
+    border-radius:16px;padding:20px;min-height:520px;
+    border:2px solid #8B5A3C;
+    position:relative;overflow:hidden
+  }
+  .pixel-deco{
+    position:absolute;top:0;left:0;width:100%;height:100%;
+    pointer-events:none;opacity:0.07;
+    background-image:
+      repeating-linear-gradient(0deg,transparent,transparent 7px,#DFC4A0 7px,#DFC4A0 8px),
+      repeating-linear-gradient(90deg,transparent,transparent 7px,#DFC4A0 7px,#DFC4A0 8px);
+  }
+  .hdr{display:flex;align-items:center;gap:12px;margin-bottom:18px;position:relative;z-index:1}
+  .cup-svg{width:40px;height:40px}
+  .hdr-title{color:#F2E6D4;font-size:18px;font-weight:700;letter-spacing:1px;text-shadow:2px 2px 0 #2C1A0E}
+  .hdr-sub{color:#C4A07A;font-size:11px;letter-spacing:2px}
+  .status-dot{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:6px;animation:blink 1.4s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;position:relative;z-index:1}
+  .grid-full{grid-column:1/-1}
+  .card{
+    background:rgba(44,26,14,0.55);
+    border:1.5px solid #6B3F2A;
+    border-radius:10px;padding:14px;
+    position:relative;overflow:hidden
+  }
+  .card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,#8B5A3C,#C4A07A,#8B5A3C)
+  }
+  .card-label{color:#C4A07A;font-size:10px;letter-spacing:2px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+  .card-label .pin{font-size:9px;background:#4A2C17;color:#DFC4A0;padding:2px 6px;border-radius:3px;border:1px solid #6B3F2A}
+  .btn-row{display:flex;gap:10px;margin-top:4px}
+  .pix-btn{
+    font-family:var(--pixel);font-size:12px;
+    padding:8px 18px;border-radius:6px;cursor:pointer;
+    border:2px solid;transition:transform 0.1s;
+    font-weight:700;letter-spacing:1px;
+    position:relative
+  }
+  .pix-btn:active{transform:translate(2px,2px)}
+  .btn-on{background:#5C3620;border-color:#C4A07A;color:#F2E6D4}
+  .btn-on.active{background:#8B5A3C;border-color:#F2E6D4;box-shadow:0 0 0 2px #C4A07A}
+  .btn-off{background:#2C1A0E;border-color:#6B3F2A;color:#A67C5B}
+  .btn-off.active{background:#3D2010;border-color:#F2E6D4;box-shadow:0 0 0 2px #8B5A3C}
+  .slider-wrap{margin-top:6px}
+  input[type=range]{
+    -webkit-appearance:none;width:100%;height:6px;
+    border-radius:3px;outline:none;cursor:pointer;
+    background:linear-gradient(90deg,#C4A07A 0%,#C4A07A var(--pct,50%),#4A2C17 var(--pct,50%),#4A2C17 100%);
+    border:1px solid #6B3F2A
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:18px;height:18px;
+    border-radius:3px;background:#F2E6D4;
+    border:2px solid #8B5A3C;cursor:pointer;
+    box-shadow:2px 2px 0 #2C1A0E
+  }
+  .slider-val{color:#F2E6D4;font-size:20px;font-weight:700;margin-top:4px;text-shadow:1px 1px 0 #2C1A0E}
+  .slider-val span{font-size:11px;color:#A67C5B;margin-left:4px}
+  .led-area{display:flex;align-items:center;gap:12px}
+  .led-lamp{width:28px;height:28px;border-radius:4px;border:3px solid #6B3F2A;transition:all 0.3s;flex-shrink:0}
+  .led-lamp.on{background:#C4A07A;border-color:#F2E6D4;box-shadow:0 0 0 3px rgba(196,160,122,0.3)}
+  .led-lamp.off{background:#2C1A0E;border-color:#4A2C17}
+  .led-text{color:#F2E6D4;font-size:13px}
+  .led-sub{color:#A67C5B;font-size:10px;letter-spacing:1px}
+  .gauge-wrap{margin-top:6px}
+  .gauge-bar{height:20px;background:#2C1A0E;border-radius:4px;border:1px solid #4A2C17;overflow:hidden;position:relative}
+  .gauge-fill{height:100%;border-radius:3px;transition:width 0.4s;background:linear-gradient(90deg,#6B3F2A,#C4A07A)}
+  .gauge-marks{display:flex;justify-content:space-between;margin-top:3px}
+  .gauge-marks span{color:#6B3F2A;font-size:8px}
+  .temp-display{display:flex;align-items:baseline;gap:4px;margin-top:6px}
+  .temp-big{color:#DFC4A0;font-size:28px;font-weight:700;text-shadow:1px 1px 0 #2C1A0E}
+  .temp-unit{color:#A67C5B;font-size:13px}
+  .temp-bar-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+  .label-box{
+    background:#2C1A0E;border:1.5px solid #4A2C17;
+    border-radius:6px;padding:8px 12px;margin-top:6px;min-height:36px;
+    font-size:13px;color:#DFC4A0;word-break:break-all;
+    letter-spacing:1px
+  }
+  .label-hint{color:#6B3F2A;font-size:10px;margin-top:4px}
+  .label-input-row{display:flex;gap:8px;margin-top:8px}
+  .label-input{
+    font-family:var(--pixel);flex:1;background:#2C1A0E;
+    border:1.5px solid #6B3F2A;border-radius:6px;
+    padding:6px 10px;color:#F2E6D4;font-size:12px;outline:none
+  }
+  .label-input:focus{border-color:#C4A07A}
+  .send-btn{
+    font-family:var(--pixel);font-size:11px;
+    background:#5C3620;border:2px solid #C4A07A;
+    color:#F2E6D4;padding:6px 12px;border-radius:6px;cursor:pointer;
+    font-weight:700
+  }
+  .send-btn:active{transform:translate(1px,1px)}
+  .toast{
+    position:fixed;bottom:16px;right:16px;z-index:99;
+    background:#3D2010;border:2px solid #C4A07A;
+    color:#F2E6D4;font-family:var(--pixel);font-size:12px;
+    padding:10px 16px;border-radius:8px;
+    display:none;letter-spacing:1px
+  }
+  .toast.show{display:block;animation:fadeup 0.3s ease}
+  @keyframes fadeup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .steam{position:absolute;top:4px;right:14px;opacity:0.15;font-size:18px;animation:steam 2s infinite}
+  @keyframes steam{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-6px) scale(1.1)}}
+  .pixel-cup{fill:none}
+  .refresh-btn{
+    font-family:var(--pixel);font-size:10px;
+    background:transparent;border:1px solid #4A2C17;
+    color:#A67C5B;padding:3px 8px;border-radius:4px;cursor:pointer;
+    margin-left:auto
+  }
+  .refresh-btn:hover{border-color:#C4A07A;color:#DFC4A0}
+  .api-status{font-size:9px;letter-spacing:1px;padding:2px 6px;border-radius:3px;margin-left:auto}
+  .api-ok{background:#2C4A17;color:#A0C47A;border:1px solid #3B6D11}
+  .api-err{background:#4A1717;color:#C47A7A;border:1px solid #6D1111}
+  .api-loading{background:#4A3A17;color:#C4B07A;border:1px solid #6D5511}
+</style>
+
+</head><body><h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Blynk Coffee Dashboard — control panel for IoT device</h2>
+
+<div class="dash">
+  <div class="pixel-deco"></div>
+
+  <div class="hdr">
+    <svg class="cup-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="16" width="22" height="18" rx="2" fill="#6B3F2A" stroke="#C4A07A" stroke-width="1.5"></rect>
+      <rect x="8" y="18" width="18" height="3" fill="#8B5A3C"></rect>
+      <path d="M28 20 Q36 20 36 26 Q36 32 28 32" stroke="#C4A07A" stroke-width="2" fill="none"></path>
+      <rect x="10" y="34" width="14" height="3" rx="1" fill="#4A2C17" stroke="#8B5A3C" stroke-width="1"></rect>
+      <rect x="12" y="8" width="2" height="7" rx="1" fill="#A67C5B" opacity="0.7"></rect>
+      <rect x="17" y="5" width="2" height="10" rx="1" fill="#A67C5B" opacity="0.7"></rect>
+      <rect x="22" y="7" width="2" height="8" rx="1" fill="#A67C5B" opacity="0.7"></rect>
+    </svg>
+    <div>
+      <div class="hdr-title">☕ COFFEE IoT DASHBOARD</div>
+      <div class="hdr-sub">BLYNK CLOUD CONTROL v1.0</div>
+    </div>
+    <div id="apiStatus" class="api-status api-ok">ONLINE</div>
+  </div>
+
+  <div class="grid">
+    <!-- BUTTON -->
+    <div class="card">
+      <div class="steam">☁</div>
+      <div class="card-label">
+        <i class="ti ti-toggle-right" aria-hidden="true"></i> ปุ่มเปิด/ปิด
+        <span class="pin">V0</span>
+      </div>
+      <div class="btn-row">
+        <button class="pix-btn btn-on" id="btnOn" onclick="setButton(1)">▶ เปิด</button>
+        <button class="pix-btn btn-off active" id="btnOff" onclick="setButton(0)">■ ปิด</button>
+      </div>
+      <div style="margin-top:8px;color:#A67C5B;font-size:10px;letter-spacing:1px" id="btnStatus">สถานะ: ปิดอยู่ ⬛</div>
+    </div>
+
+    <!-- LED -->
+    <div class="card">
+      <div class="card-label">
+        <i class="ti ti-circle" aria-hidden="true"></i> สถานะการทำงาน
+        <span class="pin">V1</span>
+        <button class="refresh-btn" onclick="fetchLED()">↻</button>
+      </div>
+      <div class="led-area">
+        <div class="led-lamp off" id="ledLamp"></div>
+        <div>
+          <div class="led-text" id="ledText">ไม่ทำงาน</div>
+          <div class="led-sub" id="ledSub">LED : 0</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button class="pix-btn btn-on" style="font-size:10px;padding:5px 10px" onclick="setLED(1)">LED ON</button>
+        <button class="pix-btn btn-off" style="font-size:10px;padding:5px 10px" onclick="setLED(0)">LED OFF</button>
+      </div>
+    </div>
+
+    <!-- SLIDER full width -->
+    <div class="card grid-full">
+      <div class="card-label">
+        <i class="ti ti-sun" aria-hidden="true"></i> ปรับค่าแสง
+        <span class="pin">V2</span>
+      </div>
+      <div class="slider-wrap">
+        <input type="range" min="0" max="255" step="1" value="128" id="lightSlider" oninput="onSlider(this)" style="--pct: 37.64705882352941%;">
+        <div style="display:flex;justify-content:space-between;margin-top:3px">
+          <span style="color:#6B3F2A;font-size:9px">0 — มืด</span>
+          <div class="slider-val"><span id="sliderVal">96</span><span>/ 255</span></div>
+          <span style="color:#6B3F2A;font-size:9px">255 — สว่าง</span>
+        </div>
+        <div style="margin-top:6px;height:8px;border-radius:4px;background:linear-gradient(90deg,#2C1A0E,#F2E6D4);border:1px solid #4A2C17;position:relative">
+          <div style="position: absolute; top: -2px; width: 12px; height: 12px; background: rgb(196, 160, 122); border-radius: 2px; border: 2px solid rgb(242, 230, 212); transform: translateX(-50%); transition: left 0.1s; left: 233.765px;" id="sliderThumb"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAUGE / TEMP -->
+    <div class="card">
+      <div class="card-label">
+        <i class="ti ti-temperature" aria-hidden="true"></i> อุณหภูมิ
+        <span class="pin">V3</span>
+        <button class="refresh-btn" onclick="fetchTemp()">↻</button>
+      </div>
+      <div class="temp-display">
+        <span class="temp-big" id="tempVal">55</span>
+        <span class="temp-unit">°C</span>
+      </div>
+      <div class="gauge-wrap">
+        <div class="gauge-bar">
+          <div class="gauge-fill" id="gaugeFill" style="width: 55%;"></div>
+        </div>
+        <div class="gauge-marks">
+          <span>0°</span><span>25°</span><span>50°</span><span>75°</span><span>100°</span>
+        </div>
+      </div>
+      <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">
+        <button class="pix-btn btn-off" style="font-size:9px;padding:4px 8px" onclick="sendTemp(25)">25°C</button>
+        <button class="pix-btn btn-off" style="font-size:9px;padding:4px 8px" onclick="sendTemp(55)">55°C</button>
+        <button class="pix-btn btn-off" style="font-size:9px;padding:4px 8px" onclick="sendTemp(90)">90°C</button>
+      </div>
+    </div>
+
+    <!-- LABEL -->
+    <div class="card">
+      <div class="card-label">
+        <i class="ti ti-message" aria-hidden="true"></i> การตอบกลับ
+        <span class="pin">V4</span>
+      </div>
+      <div class="label-box" id="labelBox">ไอ้อ้วนนนน</div>
+      <div class="label-hint">ส่งข้อความไปยัง Blynk</div>
+      <div class="label-input-row">
+        <input class="label-input" type="text" id="labelInput" placeholder="พิมพ์ข้อความ..." value="yayyy">
+        <button class="send-btn" onclick="sendLabel()">ส่ง ▶</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" style="border-color: rgb(196, 160, 122);">ปิดเครื่องแล้ว</div>
+
+<script>
+const TOKEN = 'VTo7Rf7SZeFctDkHUSNEJytSGT0X9DYu';
+const BASE = 'https://blynk.cloud/external/api';
+
+function showToast(msg,ok=true){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast show';
+  t.style.borderColor=ok?'#C4A07A':'#E24B4A';
+  setTimeout(()=>{t.className='toast'},2200);
+}
+
+function setApiStatus(state){
+  const el=document.getElementById('apiStatus');
+  if(state==='ok'){el.className='api-status api-ok';el.textContent='ONLINE'}
+  else if(state==='err'){el.className='api-status api-err';el.textContent='ERROR'}
+  else{el.className='api-status api-loading';el.textContent='LOADING...'}
+}
+
+async function blynkGet(pin){
+  try{
+    const r=await fetch(`${BASE}/get?token=${TOKEN}&${pin}`);
+    if(!r.ok)throw new Error(r.status);
+    const txt=await r.text();
+    setApiStatus('ok');
+    return txt.trim();
+  }catch(e){setApiStatus('err');throw e;}
+}
+
+async function blynkSet(pin,val){
+  try{
+    const r=await fetch(`${BASE}/update?token=${TOKEN}&${pin}=${encodeURIComponent(val)}`);
+    if(!r.ok)throw new Error(r.status);
+    setApiStatus('ok');
+    return true;
+  }catch(e){setApiStatus('err');return false;}
+}
+
+async function setButton(v){
+  const ok=await blynkSet('V0',v);
+  if(ok){
+    document.getElementById('btnOn').classList.toggle('active',v===1);
+    document.getElementById('btnOff').classList.toggle('active',v===0);
+    document.getElementById('btnStatus').textContent='สถานะ: '+(v?'เปิดอยู่ 🟤':'ปิดอยู่ ⬛');
+    showToast(v?'เปิดเครื่องแล้ว ☕':'ปิดเครื่องแล้ว');
+  }else showToast('เชื่อมต่อไม่ได้ 😢',false);
+}
+
+async function setLED(v){
+  const ok=await blynkSet('V1',v);
+  if(ok){
+    updateLEDUI(v);
+    showToast('LED '+(v?'ON':'OFF'));
+  }else showToast('ส่งคำสั่งล้มเหลว',false);
+}
+
+function updateLEDUI(v){
+  const lamp=document.getElementById('ledLamp');
+  lamp.className='led-lamp '+(v?'on':'off');
+  document.getElementById('ledText').textContent=v?'กำลังทำงาน':'ไม่ทำงาน';
+  document.getElementById('ledSub').textContent='LED : '+v;
+}
+
+async function fetchLED(){
+  try{
+    const v=await blynkGet('V1');
+    updateLEDUI(parseInt(v)||0);
+  }catch(e){showToast('โหลด LED ไม่สำเร็จ',false);}
+}
+
+function onSlider(el){
+  const v=parseInt(el.value);
+  document.getElementById('sliderVal').textContent=v;
+  const pct=(v/255)*100;
+  el.style.setProperty('--pct',pct+'%');
+  const thumb=document.getElementById('sliderThumb');
+  const w=el.offsetWidth||200;
+  const offset=(v/255)*(w-12);
+  thumb.style.left=(offset+6)+'px';
+  clearTimeout(el._t);
+  el._t=setTimeout(async()=>{
+    const ok=await blynkSet('V2',v);
+    if(ok)showToast('ความสว่าง: '+v);
+    else showToast('ส่งค่าล้มเหลว',false);
+  },400);
+}
+
+async function fetchButton(){
+  try{
+    const v=await blynkGet('V0');
+    const state=parseInt(v)||0;
+    document.getElementById('btnOn').classList.toggle('active',state===1);
+    document.getElementById('btnOff').classList.toggle('active',state===0);
+    document.getElementById('btnStatus').textContent='สถานะ: '+(state?'เปิดอยู่ 🟤':'ปิดอยู่ ⬛');
+  }catch(e){document.getElementById('btnStatus').textContent='โหลดไม่สำเร็จ';}
+}
+
+async function fetchLight(){
+  try{
+    const v=await blynkGet('V2');
+    const num=parseInt(v)||0;
+    const sl=document.getElementById('lightSlider');
+    sl.value=num;
+    document.getElementById('sliderVal').textContent=num;
+    const pct=(num/255)*100;
+    sl.style.setProperty('--pct',pct+'%');
+  }catch(e){}
+}
+
+async function fetchTemp(){
+  try{
+    const v=await blynkGet('V3');
+    const num=parseFloat(v)||0;
+    setTemp(num);
+  }catch(e){showToast('โหลดอุณหภูมิไม่สำเร็จ',false);}
+}
+
+function setTemp(num){
+  document.getElementById('tempVal').textContent=Math.round(num);
+  const pct=Math.min(100,Math.max(0,(num/100)*100));
+  document.getElementById('gaugeFill').style.width=pct+'%';
+}
+
+async function sendTemp(v){
+  const ok=await blynkSet('V3',v);
+  if(ok){setTemp(v);showToast('ตั้งอุณหภูมิ '+v+'°C');}
+  else showToast('ส่งค่าล้มเหลว',false);
+}
+
+async function sendLabel(){
+  const msg=document.getElementById('labelInput').value.trim();
+  if(!msg)return;
+  const ok=await blynkSet('V4',msg);
+  if(ok){
+    document.getElementById('labelBox').textContent=msg;
+    showToast('ส่งข้อความแล้ว: '+msg);
+  }else showToast('ส่งข้อความล้มเหลว',false);
+}
+
+async function initDash(){
+  setApiStatus('loading');
+  await fetchButton();
+  await fetchLED();
+  await fetchLight();
+  await fetchTemp();
+}
+
+initDash();
+setInterval(()=>{fetchLED();fetchTemp();},10000);
+</script>
+</body></html>
